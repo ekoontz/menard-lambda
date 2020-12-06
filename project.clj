@@ -4,6 +4,7 @@
   :global-vars {*warn-on-reflection* true}
 
   :dependencies [[org.clojure/clojure "1.10.1"]
-                 [fierycod/holy-lambda "0.0.6"]]
+                 [fierycod/holy-lambda "0.0.6"]
+                 [menard "1.4.0-SNAPSHOT"]]
   :uberjar-name "output.jar"
   :aot :all)
