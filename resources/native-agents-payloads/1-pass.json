@@ -1,0 +1,8 @@
+{
+	"name": "menard-lambda.core.ExampleLambda",
+	"event": {},
+	"context": {
+    "envs": {}
+  },
+  "propagate": true
+}
