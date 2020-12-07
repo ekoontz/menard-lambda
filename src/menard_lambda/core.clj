@@ -15,7 +15,7 @@
                     (filter #(not (nil? %)))
                     first)]
     (when (nil? result)
-      (h/warn (str "failed to generate on two occasions with nl: '" nl "'")))
+      (h/warn (str "failed to generate en on two occasions from nl: '" nl "'")))
     result))
 
 (defn dag-to-string [dag]
@@ -49,7 +49,6 @@
 (h/deflambda ParseNL
   [event context]
   (h/info "Logging...")
-  (h/info (str "THE Q PARAM: " (-> event :queryStringParameters :q)))
   (let [q (-> event :queryStringParameters :q)]
     {:statusCode 200
      :headers {"Content-Type" "application/json"}
