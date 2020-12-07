@@ -28,8 +28,8 @@ Resources:
       CodeUri: target/output.jar
       FunctionName: ParseNL
       Events:
-        HelloEvent:
+        ParseEvent:
           Type: Api
           Properties:
-            Path: /
+            Path: /parse
             Method: get
