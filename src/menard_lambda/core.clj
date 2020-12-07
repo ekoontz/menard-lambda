@@ -46,7 +46,7 @@
                (map #(u/get-in % [:sem]))
                (map dag-to-string))}))
 
-(h/deflambda ExampleLambda
+(h/deflambda ParseNL
   [event context]
   (h/info "Logging...")
   (h/info (str "THE Q PARAM: " (-> event :queryStringParameters :q)))
@@ -56,4 +56,4 @@
      :body (-> q parse-nl)
      :isBase64Encoded false}))
 
-(h/gen-main [#'ExampleLambda])
+(h/gen-main [#'ParseNL])

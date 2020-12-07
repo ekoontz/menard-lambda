@@ -24,9 +24,9 @@ Resources:
   HelloLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: menard-lambda.core.ExampleLambda
+      Handler: menard-lambda.core.ParseNL
       CodeUri: target/output.jar
-      FunctionName: ExampleLambdaFunction
+      FunctionName: ParseNL
       Events:
         HelloEvent:
           Type: Api
