@@ -53,7 +53,7 @@
   (let [q (-> event :queryStringParameters :q)]
     {:statusCode 200
      :headers {"Content-Type" "application/json"}
-     :body (-> q parse-nl write-str)
+     :body (-> q parse-nl)
      :isBase64Encoded false}))
 
 (h/gen-main [#'ExampleLambda])
