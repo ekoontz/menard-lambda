@@ -36,7 +36,7 @@ Resources:
   GenerateNL:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: menard-lambda.core.ParseNL
+      Handler: menard-lambda.core.GenerateNL
       CodeUri: target/output.jar
       FunctionName: GenerateNL
       Events:

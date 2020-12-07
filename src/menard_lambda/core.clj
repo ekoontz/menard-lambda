@@ -55,4 +55,13 @@
      :body (-> q parse-nl)
      :isBase64Encoded false}))
 
+(h/deflambda GenerateNL
+  [event context]
+  (h/info "Logging...")
+  (let [q (-> event :queryStringParameters :q)]
+    {:statusCode 200
+     :headers {"Content-Type" "application/json"}
+     :body (-> q parse-nl)
+     :isBase64Encoded false}))
+
 (h/gen-main [#'ParseNL])
