@@ -33,3 +33,15 @@ Resources:
           Properties:
             Path: /parse
             Method: get
+  GenerateNL:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: menard-lambda.core.ParseNL
+      CodeUri: target/output.jar
+      FunctionName: GenerateNL
+      Events:
+        ParseEvent:
+          Type: Api
+          Properties:
+            Path: /generate
+            Method: get
