@@ -21,7 +21,7 @@ Globals:
     MemorySize: !Ref MemorySize
 
 Resources:
-  HelloLambdaFunction:
+  ParseNL:
     Type: AWS::Serverless::Function
     Properties:
       Handler: menard-lambda.core.ParseNL
