@@ -2,13 +2,27 @@
   (:gen-class)
   (:require
    [clojure.data.json :as json :refer [write-str]]
+   [dag_unify.core :as u]
    [fierycod.holy-lambda.core :as h]
    [menard.english :as en]
    [menard.nederlands :as nl]
    [menard.translate :as tr]))
 
+(defn generate-english [spec nl]
+  (let [result (->> (repeatedly #(-> spec
+                                     en/generate))
+                    (take 2)
+                    (filter #(not (nil? %)))
+                    first)]
+    (when (nil? result)
+      (h/warn (str "failed to generate on two occasions with nl: '" nl "'")))
+    result))
+
+(defn dag-to-string [dag]
+  (-> dag dag_unify.serialization/serialize str))
+
 (defn parse-nl [string-to-parse]
-  (h/debug (str "parsing input: " string-to-parse))
+  (h/info (str "parsing input: " string-to-parse))
   (let [parses (->> string-to-parse
                     clojure.string/lower-case
                     nl/parse
@@ -23,14 +37,14 @@
                          (map #(generate-english %
                                                  (clojure.string/join "," (map nl/syntax-tree parses))))
                          (map #(en/morph %))))]
-    (log/info (str "nl: '" string-to-parse "' -> ["
+    (h/info (str "nl: '" string-to-parse "' -> ["
                    (clojure.string/join "," english) "]"))
     {:nederlands string-to-parse
      :trees syntax-trees
      :english (first english)
      :sem (->> parses
                (map #(u/get-in % [:sem]))
-               (map dag-to-string))})))
+               (map dag-to-string))}))
 
 (h/deflambda ExampleLambda
   [event context]
