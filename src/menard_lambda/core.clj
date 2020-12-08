@@ -6,7 +6,6 @@
    [fierycod.holy-lambda.core :as h]
    [menard-lambda.handlers
     :refer [generate-by-spec
-            generate-by-spec-with-alts
             parse-en parse-nl]]
    [menard.english :as en]
    [menard.nederlands :as nl]
@@ -26,7 +25,9 @@
   (h/info "Logging...")
   (let [q (-> event :queryStringParameters :q)]
     {:statusCode 200
-     :headers {"Content-Type" "application/json"}
+     :headers {"Content-Type" "application/json"
+               "Access-Control-Allow-Origin" "http://localhost.hiro-tan.org:3449"
+               "Access-Control-Allow-Credentials" "true"}
      :body (-> q generate-by-spec)
      :isBase64Encoded false}))
 
