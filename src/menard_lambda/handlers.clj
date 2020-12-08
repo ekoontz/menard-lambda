@@ -43,14 +43,14 @@
 
 (def ^:const clean-up-trees true)
 
-(defn generate-by-spec
+(defn generate-nl-by-spec
   "decode a spec from the input request and generate with it."
   [spec]
   (log/info (str "spec pre-decode: " spec))
   (let [spec (-> spec read-string dag_unify.serialization/deserialize)]
     (log/info (str "generate-by-spec with spec: " spec))
     (-> spec
-        generate
+        generate-nl
         (dissoc :source-tree)
         (dissoc :target-tree))))
 
@@ -64,7 +64,7 @@
       (log/warn (str "failed to generate on two occasions with nl: '" nl "'")))
     result))
 
-(defn generate-with-alternations
+(defn generate-nl-with-alternations
   "generate with _spec_ unified with each of the alternates, so generate one expression per <spec,alternate> combination."
   [spec alternates]
   (let [alternates (map dag_unify.serialization/deserialize (read-string alternates))
@@ -79,14 +79,14 @@
                   (u/unify alternate spec))))
           ;; the first one is special: we will get the [:head :root] from it
           ;; and use it with the rest of the specs.
-          first-expression (generate (first derivative-specs))
+          first-expression (generate-nl (first derivative-specs))
           expressions
           (cons first-expression
                 (->> (rest derivative-specs)
                      (map (fn [derivative-spec]
-                            (generate (u/unify derivative-spec
-                                               {:head {:root
-                                                       (u/get-in first-expression [:target-tree :head :root] :top)}}))))))]
+                            (generate-nl (u/unify derivative-spec
+                                                  {:head {:root
+                                                          (u/get-in first-expression [:target-tree :head :root] :top)}}))))))]
       (if clean-up-trees
         (->> expressions
              ;; cleanup the huge syntax trees:

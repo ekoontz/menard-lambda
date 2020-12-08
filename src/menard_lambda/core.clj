@@ -5,8 +5,8 @@
    [dag_unify.core :as u]
    [fierycod.holy-lambda.core :as h]
    [menard-lambda.handlers
-    :refer [generate-by-spec
-            generate-with-alternations
+    :refer [generate-nl-by-spec
+            generate-nl-with-alternations
             parse-nl]]))
 
 (h/deflambda ParseNL
@@ -40,7 +40,7 @@
      :headers {"Content-Type" "application/json"
                "Access-Control-Allow-Origin" "https://hiro-tan.org"
                "Access-Control-Allow-Credentials" "true"}
-     :body (generate-with-alternations spec alternates)
+     :body (generate-nl-with-alternations spec alternates)
      :isBase64Encoded false}))
 
 (h/gen-main [#'ParseNL])
