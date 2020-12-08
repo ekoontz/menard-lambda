@@ -15,7 +15,7 @@
   (let [q (-> event :queryStringParameters :q)]
     {:statusCode 200
      :headers {"Content-Type" "application/json"
-               "Access-Control-Allow-Origin" "http://localhost.hiro-tan.org:3449"
+               "Access-Control-Allow-Origin" "https://hiro-tan.org"
                "Access-Control-Allow-Credentials" "true"}
      :body (-> q parse-nl)
      :isBase64Encoded false}))
@@ -26,7 +26,7 @@
   (let [q (-> event :queryStringParameters :q)]
     {:statusCode 200
      :headers {"Content-Type" "application/json"
-               "Access-Control-Allow-Origin" "http://localhost.hiro-tan.org:3449"
+               "Access-Control-Allow-Origin" "https://hiro-tan.org"
                "Access-Control-Allow-Credentials" "true"}
      :body (-> q generate-nl-by-spec)
      :isBase64Encoded false}))
@@ -38,7 +38,7 @@
         alternates (-> event :queryStringParameters :alts)]
     {:statusCode 200
      :headers {"Content-Type" "application/json"
-               "Access-Control-Allow-Origin" "http://localhost.hiro-tan.org:3449"
+               "Access-Control-Allow-Origin" "https://hiro-tan.org"
                "Access-Control-Allow-Credentials" "true"}
      :body (generate-with-alternations spec alternates)
      :isBase64Encoded false}))
