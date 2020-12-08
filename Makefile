@@ -7,7 +7,7 @@ NC='\033[0m'
 BUCKET_NAME=menard-lambda
 STACK_NAME=menard-lambda-stack
 APP_REGION=eu-central-1
-LAMBDA_NAME=ExampleLambdaFunction
+LAMBDA_NAME=GenerateNL
 EVENT_PAYLOAD_FILE=./resources/local-event.json
 
 all: make-bucket compile pack deploy
@@ -80,4 +80,4 @@ logs-tail:
 	sam logs -n $(LAMBDA_NAME) --stack-name $(STACK_NAME) -t
 
 clean:
-	- rm -rf target/*
+	- rm -rf target packaged.yaml

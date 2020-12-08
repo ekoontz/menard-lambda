@@ -1,5 +1,5 @@
 (defproject menard-lambda "0.0.1-SNAPSHOT"
-  :description "Some great description"
+  :description "Lambda for nlquiz"
 
   :global-vars {*warn-on-reflection* true}
 

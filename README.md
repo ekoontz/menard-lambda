@@ -1,7 +1,8 @@
 # menard-lambda
-## Installation
 ```
-pip install --user aws-cli aws-sam-cli choly
+make all
 ```
-## Learn more
-Learn more about Holy Lambda [here](https://cljdoc.org/d/fierycod/holy-lambda/CURRENT/doc/installation)
+
+# Learn more
+
+Generated from Holy Lambda [here](https://cljdoc.org/d/fierycod/holy-lambda/CURRENT/doc/installation)
