@@ -43,37 +43,6 @@
 
 (def ^:const clean-up-trees true)
 
-(defn generate-with-alternations
-  "generate with _spec_ unified with each of the alternates, so generate one expression per <spec,alternate> combination."
-  [spec alternates]
-  (log/info (str "generating with spec: " spec " and alternates: "
-                  (clojure.string/join "," alternates)))
-  (let [derivative-specs
-        (->>
-         alternates
-         (map (fn [alternate]
-                (u/unify alternate spec))))
-        ;; the first one is special: we will get the [:head :root] from it and use it with the rest of the specs.
-        first-expression (generate (first derivative-specs))
-        expressions
-        (cons first-expression
-              (->> (rest derivative-specs)
-                   (map (fn [derivative-spec]
-                          (generate (u/unify derivative-spec
-                                             {:head {:root
-                                                     (u/get-in first-expression [:target-tree :head :root] :top)}}))))))]
-    (if clean-up-trees
-      (->> expressions
-           ;; cleanup the huge syntax trees:
-           (map #(-> %
-                     (dissoc % :source-tree (dag-to-string (:source-tree %)))
-                     (dissoc % :target-tree (dag-to-string (:target-tree %))))))
-          
-      ;; don't cleanup the syntax trees, but serialize them so they can be printed to json:
-      (map #(-> %
-                (assoc :source-tree (dag-to-string (:source-tree %)))
-                (assoc :target-tree (dag-to-string (:target-tree %))))))))
-
 (defn generate-by-spec
   "decode a spec from the input request and generate with it."
   [spec]
@@ -85,7 +54,7 @@
         (dissoc :source-tree)
         (dissoc :target-tree))))
 
-(defn generate-english [spec nl]
+(defn- generate-english [spec nl]
   (let [result (->> (repeatedly #(-> spec
                                      en/generate))
                     (take 2)
@@ -94,6 +63,40 @@
     (when (nil? result)
       (log/warn (str "failed to generate on two occasions with nl: '" nl "'")))
     result))
+
+(defn generate-with-alternations
+  "generate with _spec_ unified with each of the alternates, so generate one expression per <spec,alternate> combination."
+  [spec alternates]
+  (let [alternates (map dag_unify.serialization/deserialize (read-string alternates))
+        spec (-> spec read-string dag_unify.serialization/deserialize)]
+    (log/info (str "generating with spec: " spec " and alternates: "
+                   alternates))
+    (let [derivative-specs
+          (->>
+           alternates
+           (map (fn [alt] (-> alt dag_unify.serialization/deserialize)))
+           (map (fn [alternate]
+                  (u/unify alternate spec))))
+          ;; the first one is special: we will get the [:head :root] from it and use it with the rest of the specs.
+          first-expression (generate (first derivative-specs))
+          expressions
+          (cons first-expression
+                (->> (rest derivative-specs)
+                     (map (fn [derivative-spec]
+                            (generate (u/unify derivative-spec
+                                               {:head {:root
+                                                       (u/get-in first-expression [:target-tree :head :root] :top)}}))))))]
+      (if clean-up-trees
+        (->> expressions
+             ;; cleanup the huge syntax trees:
+             (map #(-> %
+                       (dissoc % :source-tree (dag-to-string (:source-tree %)))
+                       (dissoc % :target-tree (dag-to-string (:target-tree %))))))
+          
+      ;; don't cleanup the syntax trees, but serialize them so they can be printed to json:
+      (map #(-> %
+                (assoc :source-tree (dag-to-string (:source-tree %)))
+                (assoc :target-tree (dag-to-string (:target-tree %)))))))))
 
 (defn parse-nl [string-to-parse]
   (log/info (str "parsing input: " string-to-parse))
@@ -119,19 +122,3 @@
      :sem (->> parses
                (map #(u/get-in % [:sem]))
                (map dag-to-string))}))
-
-(defn parse-en [_request]
-  (let [string-to-parse
-        (get
-         (-> _request :query-params) "q")]
-    (log/info (str "parsing input: " string-to-parse))
-    (let [parses (->> string-to-parse clojure.string/lower-case en/parse
-                      (filter #(or (= [] (u/get-in % [:subcat]))
-                                   (= :top (u/get-in % [:subcat]))
-                                   (= ::none (u/get-in % [:subcat] ::none))))
-                      (filter #(= nil (u/get-in % [:mod] nil))))
-          syntax-trees (->> parses (map en/syntax-tree))]
-      {:trees syntax-trees
-       :sem (->> parses
-                 (map #(u/get-in % [:sem]))
-                 (map dag-to-string))})))

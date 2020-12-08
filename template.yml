@@ -45,3 +45,15 @@ Resources:
           Properties:
             Path: /generate
             Method: get
+  GenerateWithAltsNL:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: menard-lambda.core.GenerateWithAltsNL
+      CodeUri: target/output.jar
+      FunctionName: GenerateWithAltsNL
+      Events:
+        ParseEvent:
+          Type: Api
+          Properties:
+            Path: /generate-with-alts
+            Method: get
