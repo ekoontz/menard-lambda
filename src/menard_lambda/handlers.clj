@@ -10,7 +10,7 @@
 (defn dag-to-string [dag]
   (-> dag dag_unify.serialization/serialize str))
 
-(defn generate
+(defn generate-nl
   "generate a Dutch expression from _spec_ and translate to English, and return this pair
    along with the semantics of the English specification also."
   [spec]
@@ -77,7 +77,8 @@
            (map (fn [alt] (-> alt dag_unify.serialization/deserialize)))
            (map (fn [alternate]
                   (u/unify alternate spec))))
-          ;; the first one is special: we will get the [:head :root] from it and use it with the rest of the specs.
+          ;; the first one is special: we will get the [:head :root] from it
+          ;; and use it with the rest of the specs.
           first-expression (generate (first derivative-specs))
           expressions
           (cons first-expression
