@@ -28,7 +28,7 @@
      :headers {"Content-Type" "application/json"
                "Access-Control-Allow-Origin" "http://localhost.hiro-tan.org:3449"
                "Access-Control-Allow-Credentials" "true"}
-     :body (-> q generate-by-spec)
+     :body (-> q generate-nl-by-spec)
      :isBase64Encoded false}))
 
 (h/deflambda GenerateWithAltsNL
