@@ -16,7 +16,9 @@
   (h/info "Logging...")
   (let [q (-> event :queryStringParameters :q)]
     {:statusCode 200
-     :headers {"Content-Type" "application/json"}
+     :headers {"Content-Type" "application/json"
+               "Access-Control-Allow-Origin" "http://localhost.hiro-tan.org:3449"
+               "Access-Control-Allow-Credentials" "true"}
      :body (-> q parse-nl)
      :isBase64Encoded false}))
 
