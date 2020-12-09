@@ -15,7 +15,6 @@
    along with the semantics of the English specification also."
   [spec]
   (let [debug (log/info (str "generating a question with spec: " spec))
-        debug (log/info (str "input spec type: " (type spec)))
         target-expression (-> spec nl/generate)
         ;; try twice to generate a source expression: fails occasionally for unknown reasons:
         source-expression (->> (repeatedly #(-> target-expression tr/nl-to-en-spec en/generate))
@@ -69,8 +68,7 @@
   [spec alternates]
   (let [alternates (map dag_unify.serialization/deserialize (read-string alternates))
         spec (-> spec read-string dag_unify.serialization/deserialize)]
-    (log/info (str "generating with spec: " spec " and alternates: "
-                   alternates))
+    (log/info (str "generate-nl-with-alternations: spec: " spec))
     (let [derivative-specs
           (->>
            alternates
