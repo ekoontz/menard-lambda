@@ -74,7 +74,6 @@
     (let [derivative-specs
           (->>
            alternates
-           (map (fn [alt] (-> alt dag_unify.serialization/deserialize)))
            (map (fn [alternate]
                   (u/unify alternate spec))))
           ;; the first one is special: we will get the [:head :root] from it
