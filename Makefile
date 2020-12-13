@@ -10,7 +10,7 @@ APP_REGION=eu-central-1
 LAMBDA_NAME=GenerateNL
 EVENT_PAYLOAD_FILE=./resources/local-event.json
 
-all: make-bucket compile pack deploy
+all: deploy
 
 make-bucket:
 	@(aws s3 ls s3://$(BUCKET_NAME) || aws s3 mb s3://$(BUCKET_NAME))
@@ -61,10 +61,10 @@ native-invoke:
 invoke:
 	@sam local invoke $(LAMBDA_NAME) --template ./template.yml --skip-pull-image -e $(EVENT_PAYLOAD_FILE)
 
-pack:
+pack: compile
 	@sam package --template-file ./template.yml --output-template-file packaged.yaml --s3-bucket $(BUCKET_NAME) --s3-prefix "menard-lambda-latest"
 
-deploy:
+deploy: pack
 	@sam deploy --template-file ./packaged.yaml --stack-name $(STACK_NAME) --capabilities CAPABILITY_IAM --region $(APP_REGION)
 
 native-pack:
