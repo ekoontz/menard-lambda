@@ -43,4 +43,7 @@
      :body (generate-nl-with-alternations spec alternates)
      :isBase64Encoded false}))
 
-(h/gen-main [#'ParseNL])
+(h/gen-main [#'ParseNL
+             #'GenerateNL
+             #'GenerateWithAltsNL])
+
