@@ -21,36 +21,36 @@ Globals:
     MemorySize: !Ref MemorySize
 
 Resources:
-  ParseNL:
+  ParseNLNative:
     Type: AWS::Serverless::Function
     Properties:
       Handler: menard-lambda.core.ParseNL
       CodeUri: target/output.jar
-      FunctionName: ParseNL
+      FunctionName: ParseNLNative
       Events:
         ParseEvent:
           Type: Api
           Properties:
             Path: /parse
             Method: get
-  GenerateNL:
+  GenerateNLNative:
     Type: AWS::Serverless::Function
     Properties:
       Handler: menard-lambda.core.GenerateNL
       CodeUri: target/output.jar
-      FunctionName: GenerateNL
+      FunctionName: GenerateNLNative
       Events:
         ParseEvent:
           Type: Api
           Properties:
             Path: /generate
             Method: get
-  GenerateWithAltsNL:
+  GenerateWithAltsNLNative:
     Type: AWS::Serverless::Function
     Properties:
       Handler: menard-lambda.core.GenerateWithAltsNL
       CodeUri: target/output.jar
-      FunctionName: GenerateWithAltsNL
+      FunctionName: GenerateWithAltsNLNative
       Events:
         ParseEvent:
           Type: Api
