@@ -31,10 +31,12 @@ logs-tail:
 make-bucket:
 	(aws s3 ls s3://$(BUCKET_NAME) || aws s3 mb s3://$(BUCKET_NAME))
 
-latest.zip: target/output.jar
+latest.zip: server bootstrap
+	zip -j latest bootstrap server
+
+server: target/output.jar
 	${native_image_cmd}
 	mv -f output server
-	zip -j latest bootstrap server
 
 native-deploy: native-packaged.yml
 	sam deploy --template-file native-packaged.yml --stack-name $(NATIVE_STACK_NAME) --capabilities CAPABILITY_IAM --region $(APP_REGION)
