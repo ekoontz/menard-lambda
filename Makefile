@@ -3,7 +3,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-.PHONY: all clean deploy destroy dry-api logs-tail make-bucket native-compile native-deploy native-dry-api native-pack pack
+.PHONY: all clean deploy destroy dry-api logs-tail make-bucket native-deploy native-destroy native-dry-api
 BUCKET_NAME=menard-lambda
 STACK_NAME=menard-lambda-stack
 NATIVE_STACK_NAME=menard-lambda-stack-native
@@ -31,23 +31,24 @@ logs-tail:
 make-bucket:
 	(aws s3 ls s3://$(BUCKET_NAME) || aws s3 mb s3://$(BUCKET_NAME))
 
-native-compile: target/output.jar
+latest.zip: target/output.jar
 	${native_image_cmd}
 	mv -f output server
-	zip -j latest resources/bootstrap server
-	mv latest.zip resources/
-	rm -Rf server
+	zip -j latest bootstrap server
 
-native-deploy: native-pack
+native-deploy: native-packaged.yml
 	sam deploy --template-file native-packaged.yml --stack-name $(NATIVE_STACK_NAME) --capabilities CAPABILITY_IAM --region $(APP_REGION)
 
-native-dry-api: native-compile
-	sam local start-api --template native-template.yml --skip-pull-image
+native-destroy:
+	aws cloudformation delete-stack --stack-name $(NATIVE_STACK_NAME) --region $(APP_REGION)
 
-native-pack: native-compile
+native-dry-api: latest.zip
+	sam local start-api --template native-template.yml
+
+native-packaged.yml: latest.zip native-template.yml
 	sam package --template-file native-template.yml --output-template-file native-packaged.yml --s3-bucket $(BUCKET_NAME) --s3-prefix "menard-lambda-latest"
 
-pack: target/output.jar template.yml
+packaged.yml: target/output.jar template.yml
 	sam package --template-file template.yml --output-template-file packaged.yml --s3-bucket $(BUCKET_NAME) --s3-prefix "menard-lambda-latest"
 
 target/output.jar: src/menard_lambda/core.clj
