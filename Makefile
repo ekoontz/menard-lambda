@@ -17,7 +17,7 @@ native_image_cmd=docker run -v ${PWD}:/project:Z -it fierycod/graalvm-native-ima
 all: native-deploy
 
 clean:
-	-rm -rf target/ packaged.yml resources/native-packaged.yml resources/latest.zip
+	-rm -rf target/ packaged.yml native-packaged.yml latest.zip
 
 deploy: pack
 	sam deploy --template-file ./packaged.yml --stack-name $(STACK_NAME) --capabilities CAPABILITY_IAM --region $(APP_REGION)
@@ -47,8 +47,8 @@ native-dry-api: native-compile
 native-pack: native-compile
 	sam package --template-file native-template.yml --output-template-file native-packaged.yml --s3-bucket $(BUCKET_NAME) --s3-prefix "menard-lambda-latest"
 
-pack: target/output.jar
-	sam package --template-file ./template.yml --output-template-file packaged.yml --s3-bucket $(BUCKET_NAME) --s3-prefix "menard-lambda-latest"
+pack: target/output.jar template.yml
+	sam package --template-file template.yml --output-template-file packaged.yml --s3-bucket $(BUCKET_NAME) --s3-prefix "menard-lambda-latest"
 
 target/output.jar: src/menard_lambda/core.clj
 	lein uberjar
