@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: "Parsing and Generating Dutch and English\n"
+Parameters:
+  Runtime:
+    Type: String
+    Default: provided
+  Timeout:
+    Type: Number
+    Default: 40
+  MemorySize:
+    Type: Number
+    Default: 2000
+Globals:
+  Function:
+    Runtime: !Ref 'Runtime'
+    Timeout: !Ref 'Timeout'
+    MemorySize: !Ref 'MemorySize'
+Resources:
+  ParseNLNative:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: menard-lambda.core.ParseNL
+      CodeUri: ./latest.zip
+      FunctionName: ParseNLNative
+      Events:
+        ParseEvent:
+          Type: Api
+          Properties:
+            Path: /parse
+            Method: get
+  GenerateNLNative:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: menard-lambda.core.GenerateNL
+      CodeUri: ./latest.zip
+      FunctionName: GenerateNLNative
+      Events:
+        ParseEvent:
+          Type: Api
+          Properties:
+            Path: /generate
+            Method: get
+  GenerateWithAltsNLNative:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: menard-lambda.core.GenerateWithAltsNL
+      CodeUri: ./latest.zip
+      FunctionName: GenerateWithAltsNLNative
+      Events:
+        ParseEvent:
+          Type: Api
+          Properties:
+            Path: /generate-with-alts
+            Method: get
