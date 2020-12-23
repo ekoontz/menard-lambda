@@ -7,7 +7,6 @@ fnative-envs.list
 envs.json
 envs.example.json
 *.zip
-bootstrap
 /classes
 /checkouts
 profiles.clj
