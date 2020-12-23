@@ -21,7 +21,7 @@ endif
 all: native-deploy
 
 clean:
-	-rm -rf target packaged.yml resources/native-template.yml resources/latest.zip
+	-rm -rf target/ packaged.yml resources/native-packaged.yml resources/latest.zip
 
 deploy: pack
 	@sam deploy --template-file ./packaged.yml --stack-name $(STACK_NAME) --capabilities CAPABILITY_IAM --region $(APP_REGION)
