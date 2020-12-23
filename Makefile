@@ -42,12 +42,6 @@ trace-to-configuration:
 dry-api:
 	@sam local start-api --skip-pull-image
 
-gen-native-configuration:
-	@choly graal -e "java -agentlib:native-image-agent=config-merge-dir=resources/native-configuration -Dexecutor=native-agent -jar target/output.jar"
-
-gen-native-template:
-	choly template -t template.yml
-
 native-compile: target/output.jar
 	choly graal -e "native-image -jar target/output.jar \
 			--report-unsupported-elements-at-runtime \
@@ -61,7 +55,7 @@ native-compile: target/output.jar
 	mv latest.zip resources/
 	rm -Rf server
 
-pack: compile
+pack: target/output.jar
 	@sam package --template-file ./template.yml --output-template-file packaged.yml --s3-bucket $(BUCKET_NAME) --s3-prefix "menard-lambda-latest"
 
 native-pack: native-compile
@@ -76,7 +70,7 @@ native-destroy:
 logs-tail:
 	sam logs -n $(LAMBDA_NAME) --stack-name $(STACK_NAME) -t
 
-target/output.jar: src/hello_lambda/core.clj
+target/output.jar: src/menard_lambda/core.clj
 	@lein uberjar
 
 
