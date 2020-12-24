@@ -9,6 +9,10 @@
             generate-nl-with-alternations
             parse-nl]]))
 
+(defn -main
+  [& args]
+  (println "hello, world!!"))
+
 (h/deflambda ParseNL
   [event context]
   (h/info "Logging...")
@@ -43,7 +47,7 @@
      :body (generate-nl-with-alternations spec alternates)
      :isBase64Encoded false}))
 
-(h/gen-main [#'ParseNL
-             #'GenerateNL
-             #'GenerateWithAltsNL])
-
+;;(h/gen-main [#'ParseNL])
+;;             #'GenerateNL
+;;             #'GenerateWithAltsNL])
+;;)

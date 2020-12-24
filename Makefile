@@ -12,7 +12,7 @@ LAMBDA1_NAME=GenerateNL
 LAMBDA2_NAME=ParseNL
 LAMBDA3_NAME=GenerateWithAlternatesNL
 
-native_image_cmd=docker run -v ${PWD}:/project:Z -it fierycod/graalvm-native-image:latest bash -c "cd /project && native-image -jar target/output.jar --report-unsupported-elements-at-runtime --no-fallback --enable-url-protocols=http,https --no-server --initialize-at-build-time "
+native_image_cmd=docker run -v ${PWD}:/project:Z -it fierycod/graalvm-native-image:latest bash -c "cd /project && native-image --verbose -jar target/output.jar --report-unsupported-elements-at-runtime --enable-url-protocols=http,https --no-server --initialize-at-build-time "
 
 all: native-deploy
 

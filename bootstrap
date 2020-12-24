@@ -4,4 +4,10 @@ set -e
 
 ls -la
 
+echo "### <env>"
+
+env
+
+echo "### </env>"
+
 ./server
