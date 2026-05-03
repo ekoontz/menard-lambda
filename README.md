@@ -5,4 +5,5 @@ make all
 
 # Learn more
 
-Generated from Holy Lambda [here](https://cljdoc.org/d/fierycod/holy-lambda/CURRENT/doc/installation)
+This is possible thanks to [Holy Lambda](https://cljdoc.org/d/fierycod/holy-lambda/CURRENT/doc/installation)
+
