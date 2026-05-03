@@ -5,6 +5,7 @@
    [fierycod.holy-lambda.core :as log]
    [menard.english :as en]
    [menard.nederlands :as nl]
+   [menard.translate.spec :as spec]
    [menard.translate :as tr]))
 
 (defn dag-to-string [dag]
@@ -17,7 +18,7 @@
   (let [debug (log/info (str "generating a question with spec: " spec))
         target-expression (-> spec nl/generate)
         ;; try twice to generate a source expression: fails occasionally for unknown reasons:
-        source-expression (->> (repeatedly #(-> target-expression tr/nl-to-en-spec en/generate))
+        source-expression (->> (repeatedly #(-> target-expression spec/nl-to-en-spec en/generate))
                                (take 2)
                                (filter #(not (empty? %)))
                                first)
@@ -37,7 +38,7 @@
         (log/error (str "failed to generate a source expression for spec: " spec "; target expression: "
                        (nl/syntax-tree target-expression)))
         (log/error (str " tried to generate from: "
-                        (dag_unify.serialization/serialize (-> target-expression tr/nl-to-en-spec)))))
+                        (dag_unify.serialization/serialize (-> target-expression spec/nl-to-en-spec)))))
       result)))
 
 (def ^:const clean-up-trees true)
@@ -108,7 +109,7 @@
                     (sort (fn [a b] (> (count (str a)) (count (str b))))))
         syntax-trees (->> parses (map nl/syntax-tree))
         english (-> (->> parses
-                         (map tr/nl-to-en-spec)
+                         (map spec/nl-to-en-spec)
                          (map #(generate-english %
                                                  (clojure.string/join "," (map nl/syntax-tree parses))))
                          (map #(en/morph %))))]

@@ -5,9 +5,9 @@
 
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/data.json "0.2.7"]
-                 [dag_unify "1.9.8"]
+                 [dag_unify "1.11.2"]
                  [fierycod/holy-lambda "0.0.6"]
-                 [menard "1.4.0-SNAPSHOT"]
+                 [menard "1.10.2"]
                  ]
   :main menard-lambda.core
   :uberjar-name "output.jar"

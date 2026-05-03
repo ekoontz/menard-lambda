@@ -26,7 +26,7 @@
 
 (h/deflambda GenerateNL
   [event context]
-  (h/info "Logging...")
+  (h/info "GenerateNL start.")
   (let [q (-> event :queryStringParameters :q)]
     {:statusCode 200
      :headers {"Content-Type" "application/json"
@@ -37,7 +37,7 @@
 
 (h/deflambda GenerateWithAltsNL
   [event context]
-  (h/info "Logging...")
+  (h/info "GenerateWithAltsNL")
   (let [spec (-> event :queryStringParameters :spec)
         alternates (-> event :queryStringParameters :alts)]
     {:statusCode 200
@@ -46,6 +46,9 @@
                "Access-Control-Allow-Credentials" "true"}
      :body (generate-nl-with-alternations spec alternates)
      :isBase64Encoded false}))
+
+
+
 
 ;;(h/gen-main [#'ParseNL])
 ;;             #'GenerateNL
