@@ -5,7 +5,7 @@ NC='\033[0m'
 
 .PHONY: all clean deploy destroy dry-api logs-tail make-bucket native-deploy native-destroy native-dry-api
 BUCKET_NAME=menard-lambda
-STACK_NAME=menard-lambda-stack
+STACK_NAME=menard
 NATIVE_STACK_NAME=menard-lambda-stack-native
 APP_REGION=eu-central-1
 LAMBDA1_NAME=GenerateNL
