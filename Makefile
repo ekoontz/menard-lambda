@@ -17,7 +17,7 @@ native_image_cmd=docker run -v ${PWD}:/project:Z -it fierycod/graalvm-native-ima
 all: native-deploy
 
 clean:
-	-rm -rf target/ packaged.yml native-packaged.yml latest.zip
+	-rm -rf target/ packaged.yml native-packaged.yml latest.zip server
 
 deploy: pack
 	sam deploy --template-file ./packaged.yml --stack-name $(STACK_NAME) --capabilities CAPABILITY_IAM --region $(APP_REGION)
